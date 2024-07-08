@@ -49,3 +49,16 @@ async def update_auth_group(id:int, auth_group:UpdateAuthGroup, db:Session= Depe
     return await authgroup_usecase.update_auth_group(id, auth_group.name, auth_group.description, auth_group.deactivate)
 
 
+
+
+@router.delete("/authgroup/{id}", status_code=status.HTTP_200_OK)
+async def update_auth_group(id:int, db:Session= Depends(Connect.get_db)):
+    authgroup_gateway =  AuthGroupGateway(db)
+    authgroup_usecase= AuthGroupUseCase(authgroup_gateway)
+    return await authgroup_usecase.delete_auth_group(id)
+
+
+
+
+
+

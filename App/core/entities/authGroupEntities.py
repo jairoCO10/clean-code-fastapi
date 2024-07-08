@@ -19,4 +19,5 @@ class CreateAuthGroup:
     name:str
     description:str
     
+    
 

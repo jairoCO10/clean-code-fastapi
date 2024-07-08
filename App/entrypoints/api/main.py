@@ -6,6 +6,7 @@ from fastapi.middleware.gzip import GZipMiddleware
 from App.infrastructure.database import Connection
 from App.entrypoints.routers import authRouters
 from App.entrypoints.routers import usersRouters
+from App.entrypoints.routers import permissionRouters
 from fastapi.exceptions import RequestValidationError, HTTPException
 import os
 import logging
@@ -80,4 +81,5 @@ async def generic_exception_handler(request: Request, exc: Exception):
 
 app.include_router(authRouters.router, prefix="/api/auth", tags=["AUTH"])
 app.include_router(usersRouters.router, prefix="/api/v1/users", tags=["users"])
+app.include_router(permissionRouters.router, prefix="/api/v1/permissions", tags=["permission"])
 
