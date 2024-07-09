@@ -1,10 +1,19 @@
 pipeline {
     agent any
 
+    environment {
+        DOCKER_BUILDKIT = 1
+    }
+
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/jairoCO10/clean-code-fastapi.git'
+                git branch: 'main', url: 'https://github.com/jairoCO10/clean-code-fastapi.git'
+            }
+        }
+        stage('Copy .env') {
+            steps {
+                sh 'cp /path/to/.env .'
             }
         }
         stage('Setup Python Environment') {
@@ -17,15 +26,15 @@ pipeline {
         }
         stage('Run Tests') {
             steps {
-                sh '. venv/bin/activate && pytest'
+                sh '. venv/bin/activate && pytest --junitxml=tests/reports/results.xml'
             }
         }
     }
 
     post {
         always {
-            junit 'tests/reports/*.xml'  // Si estás generando reportes JUnit
-            archiveArtifacts 'tests/reports/*.xml'
+            junit 'tests/reports/results.xml'
+            archiveArtifacts artifacts: 'tests/reports/results.xml', allowEmptyArchive: true
             cleanWs()
         }
     }
