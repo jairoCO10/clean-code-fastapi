@@ -10,7 +10,7 @@ RUN apt-get update && \
     && rm -rf /var/lib/apt/lists/*
 
 
-USER root
+
 
 WORKDIR /usr/src/app
 
@@ -18,6 +18,8 @@ COPY libraries/requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
+
+USER jenkins
 
 EXPOSE 8015
 
