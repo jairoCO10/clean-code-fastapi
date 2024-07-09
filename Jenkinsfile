@@ -11,17 +11,17 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/jairoCO10/clean-code-fastapi.git'
             }
         }
-        stage('Copy .env') {
-            steps {
-                script {
-                    if (fileExists(ENV_PATH)) {
-                        sh "cp ${ENV_PATH} ."
-                    } else {
-                        error "El archivo .env no se encontró en ${ENV_PATH}"
-                    }
-                }
-            }
-        }
+        // stage('Copy .env') {
+        //     steps {
+        //         script {
+        //             if (fileExists(ENV_PATH)) {
+        //                 sh "cp ${ENV_PATH} ."
+        //             } else {
+        //                 error "El archivo .env no se encontró en ${ENV_PATH}"
+        //             }
+        //         }
+        //     }
+        // }
         stage('Setup Python Environment') {
             steps {
                 sh 'python3 -m venv venv'
