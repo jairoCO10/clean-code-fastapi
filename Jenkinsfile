@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         DOCKER_BUILDKIT = 1
+        PATH = "/usr/local/bin:/usr/bin:/bin:/path/to/python3" // Añade la ruta correcta a python3
     }
 
     stages {
