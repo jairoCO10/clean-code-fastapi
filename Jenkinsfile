@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_BUILDKIT = 1
-        PATH = "/usr/local/bin:/usr/bin:/bin:/path/to/python3" // Añade la ruta correcta a python3
+        DOCKER_BUILDKIT = '1'
+        PATH = "/usr/local/bin:/usr/bin:/bin:/path/to/python" // Añade la ruta correcta a python3
     }
 
     stages {
@@ -12,20 +12,9 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/jairoCO10/clean-code-fastapi.git'
             }
         }
-        // stage('Copy .env') {
-        //     steps {
-        //         script {
-        //             if (fileExists(ENV_PATH)) {
-        //                 sh "cp ${ENV_PATH} ."
-        //             } else {
-        //                 error "El archivo .env no se encontró en ${ENV_PATH}"
-        //             }
-        //         }
-        //     }
-        // }
         stage('Setup Python Environment') {
             steps {
-                sh 'python3 -m venv venv'
+                sh 'python -m venv venv'
                 sh '. venv/bin/activate'
                 sh 'pip install --upgrade pip'
                 sh 'pip install -r libraries/requirements.txt'
