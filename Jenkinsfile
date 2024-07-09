@@ -13,7 +13,13 @@ pipeline {
         }
         stage('Copy .env') {
             steps {
-                sh 'cp /path/to/.env .'
+                script {
+                    if (fileExists(ENV_PATH)) {
+                        sh "cp ${ENV_PATH} ."
+                    } else {
+                        error "El archivo .env no se encontró en ${ENV_PATH}"
+                    }
+                }
             }
         }
         stage('Setup Python Environment') {
