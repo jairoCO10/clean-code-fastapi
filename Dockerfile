@@ -19,7 +19,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-USER jenkins
+USER root
 
 EXPOSE 8015
 

@@ -17,11 +17,18 @@ class Login(BaseModel):
     username:str 
     password:str
 
+class AuthGroup(BaseModel):
+    group_id: int
 
 class CreateUser(UserBase):
     username:str
     cellphone: str
     password: str
+    group: Optional[AuthGroup] = None
+
+
+class AuthGroup2(AuthGroup):
+    name: str
 
 
 
@@ -31,6 +38,7 @@ class UserRead(UserBase):
     is_admin: bool
     is_staff: bool
     password:str
+    group: Optional[AuthGroup2] = None
 
     class Config:
         from_attributes = True

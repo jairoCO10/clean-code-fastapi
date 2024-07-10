@@ -1,15 +1,18 @@
 pipeline {
-    agent any
+    agent docket {
+        image 'python:3.7.17'
+    }
 
     environment {
         DOCKER_BUILDKIT = '1'
-        PATH = "/usr/local/bin:/usr/bin:/bin:/path/to/python" // Añade la ruta correcta a python3
+        TOKEN = credentials('file-env')
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/jairoCO10/clean-code-fastapi.git'
+                git branch: 'main', 
+                url: 'https://github.com/jairoCO10/clean-code-fastapi.git'
             }
         }
         stage('Setup Python Environment') {
@@ -22,6 +25,9 @@ pipeline {
         }
         stage('Run Tests') {
             steps {
+                withCredentials([String, 'file', 'FILE']) {
+
+                }
                 sh '. venv/bin/activate && pytest --junitxml=tests/reports/results.xml'
             }
         }

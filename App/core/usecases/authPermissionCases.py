@@ -17,6 +17,12 @@ class AuthPermissionUseCase:
         return await self.authpermission_gateway.read_auth_permission(authroup_id)
     
     async def read_auth_permissions(self,) -> AuthPermissions:
-        return await self.authpermission_gateway.read_auth_permission()
+        return await self.authpermission_gateway.read_auth_permissions()
+    
+    async def read_user_permissions(self, users_id:int):
+        return await self.authpermission_gateway.read_user_permissions(users_id)
+    
+    async def read_group_permissions(self, group_id:int):
+        return await self.authpermission_gateway.read_group_permissions(group_id)
 
     

@@ -26,8 +26,7 @@ class Connection:
     SQL_DB = os.getenv("DATABASE")
 
     SQLALCHEMY_DATABASE_URL = f"{SERVER_TYPE}+{LIBRARY_SERVER}://{SQL_USER}:{SQL_PASSWORD}@{SQL_SERVER}:{SQL_PORT}/{SQL_DB}"
-    print(SQLALCHEMY_DATABASE_URL)
-
+    
     engine = create_engine(SQLALCHEMY_DATABASE_URL)
 
     try:

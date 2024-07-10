@@ -2,6 +2,7 @@ from typing import List
 from sqlalchemy.orm import Session
 from sqlalchemy.future import select
 from App.infrastructure.models.usersModel import User as ORMUser
+from App.infrastructure.models.authUserGroupsModel import AuthUserGroup as ORMUGroup
 import bcrypt  
 
 
@@ -42,3 +43,13 @@ class UserRepository:
             self.db.commit()
         return user
     
+
+    async def agg_user_group(self, user_id:int, group_id:int) -> ORMUGroup:
+        insert = ORMUGroup(
+            user_id = user_id,
+            group_id = group_id
+        )
+        self.db.add(insert)
+        self.db.commit()
+        self.db.refresh(insert)
+        return insert

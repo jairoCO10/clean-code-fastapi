@@ -7,8 +7,8 @@ class UserUseCase:
     def __init__(self, user_gateway: UserGateway):
         self.user_gateway = user_gateway
 
-    async def create_user(self, name: str, email: str, username:str, cellphone: str, password:str) -> CreateUser:
-        return await self.user_gateway.create_user(name, email, username, cellphone, password)
+    async def create_user(self, name: str, email: str, username:str, cellphone: str, password:str, group_id:int) -> CreateUser:
+        return await self.user_gateway.create_user(name, email, username, cellphone, password, group_id)
 
     async def get_user(self, user_id: int) -> Users:
         return await self.user_gateway.get_user(user_id)

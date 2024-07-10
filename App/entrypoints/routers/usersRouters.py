@@ -14,7 +14,8 @@ router = APIRouter()
 async def create_user(user: CreateUser, db: Session = Depends(Connect.get_db)):
     user_gateway = UserGateway(db)
     user_usecase = UserUseCase(user_gateway)
-    return await user_usecase.create_user(user.name, user.email, user.username, user.cellphone, user.password)
+    user.group.group_id
+    return await user_usecase.create_user(user.name, user.email, user.username, user.cellphone, user.password, user.group.group_id)
 
 
 

@@ -16,6 +16,12 @@ class Users:
 
 
 @dataclass
+class UserGroup:
+    group_id:str
+    name:str
+
+
+@dataclass
 class CreateUser:
     id:str
     name: str
@@ -23,6 +29,7 @@ class CreateUser:
     username:str
     cellphone: str
     password: str
+
 
 
 @dataclass
