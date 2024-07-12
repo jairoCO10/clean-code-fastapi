@@ -67,3 +67,29 @@ class UpdateAuthGroup(BaseModel):
     description: Optional[str]
     deactivate: Optional[bool]
 
+
+class AuthPermissions(BaseModel):
+    id: int
+    name: str
+    content_type_id:int
+    codename:str
+
+class AuthPermissions2(BaseModel):
+    id: int
+    name: str
+    content_type_id:int
+    codename:str
+    status_permission:bool
+
+class ContentType(BaseModel):
+    id:int
+    app_label:str
+    model:str
+    permission:List[AuthPermissions2]
+    
+
+
+class UsePermission(BaseModel):
+    id:int
+    name:str
+    content_type:List[ContentType]

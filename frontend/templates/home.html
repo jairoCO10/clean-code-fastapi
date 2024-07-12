@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Inicio</title>
+    <link rel="stylesheet" href="/static/css/index.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1>Bienvenido</h1>
+          
+        <div class="container">
+            <h1>Bienvenido</h1>
+            <button id="logout-btn">Cerrar Sesión</button>
+        </div>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <aside>
+                <nav>
+                    <ul>
+                        <li><a href="#usuarios">Usuarios</a></li>
+                        <li><a href="#permisos">Permisos</a></li>
+                        <li><a href="#roles">Roles</a></li>
+                    </ul>
+                </nav>
+            </aside>
+            <section>
+                <h2>Usuarios</h2>
+                <p id="usuarios-section">Contenido relacionado con usuarios</p>
+                <h2>Permisos</h2>
+                <p id="permisos-section">Contenido relacionado con permisos</p>
+                <h2>Grupos de Roles</h2>
+                <table id="roles-table">
+                    <!-- Aquí se generará dinámicamente la tabla de roles -->
+                </table>
+                <h2>Token de Autenticación</h2>
+                <p id="token"></p> <!-- Aquí se mostrará el token -->
+            </section>
+        </div>
+    </main>
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Nuestra Aplicación. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Obtener el token del localStorage
+            const token = localStorage.getItem("DataEstado");
+
+            // Mostrar el token en el elemento HTML con id="token"
+            const tokenElement = document.getElementById("token");
+            if (token) {
+                tokenElement.textContent = token;
+            } else {
+                tokenElement.textContent = "No se encontró ningún token.";
+            }
+
+        });
+
+
+
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Función para obtener el token JWT del localStorage
+            function getToken() {
+                return localStorage.getItem("DataEstado");
+            }
+            // Función para cerrar sesión (borrar el token JWT del localStorage)
+            function logout() {
+                localStorage.removeItem("DataEstado");
+                // Redireccionar a la página de inicio de sesión u otra página de tu elección
+                window.location.href = "/"; // Cambia la URL según sea necesario
+            }
+
+            // Agregar evento de clic al botón de cerrar sesión
+            const logoutBtn = document.getElementById("logout-btn");
+            if (logoutBtn) {
+                logoutBtn.addEventListener("click", logout);
+            }
+
+            // Función para obtener los roles protegidos por JWT
+            async function fetchRoles() {
+                try {
+                    const token = getToken();
+                    if (!token) {
+                        throw new Error("No se encontró ningún token JWT.");
+                    }
+
+                    const response = await fetch("/api/auth/authgroups", {
+                        headers: {
+                            "Authorization": `Bearer ${token}`
+                        }
+                    });
+
+                    if (!response.ok) {
+                        throw new Error("Error al obtener los roles.");
+                    }
+
+                    const roles = await response.json();
+                    // Mostrar los roles en la consola para verificación
+                    console.log("Listado de Grupos de Roles:", roles);
+
+                    // Mostrar los roles en una tabla HTML
+                    const rolesTable = document.getElementById("roles-table");
+                    rolesTable.innerHTML = ""; // Limpiar contenido anterior si es necesario
+
+                    // Crear encabezados de tabla
+                    const tableHeader = document.createElement("thead");
+                    tableHeader.innerHTML = `
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Desactivado</th>
+                    <th>Fecha de Creación</th>
+                </tr>
+            `;
+                    rolesTable.appendChild(tableHeader);
+
+                    // Crear cuerpo de tabla
+                    const tableBody = document.createElement("tbody");
+                    roles.forEach(role => {
+                        const row = document.createElement("tr");
+                        row.innerHTML = `
+                    <td>${role.id}</td>
+                    <td>${role.name}</td>
+                    <td>${role.description}</td>
+                    <td>${role.deactivate ? "Sí" : "No"}</td>
+                    <td>${new Date(role.created_at).toLocaleString()}</td>
+                `;
+                        tableBody.appendChild(row);
+                    });
+                    rolesTable.appendChild(tableBody);
+                } catch (error) {
+                    console.error("Error:", error.message);
+                }
+            }
+
+            // Llamar a la función para obtener y mostrar los roles en la tabla
+            fetchRoles();
+        });
+
+    </script>
+</body>
+
+</html>

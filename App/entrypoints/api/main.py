@@ -11,6 +11,9 @@ from fastapi.exceptions import RequestValidationError, HTTPException
 import os
 import logging
 from App.entrypoints.api.logging_config import initialize_logger  # Import the logging setup function
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import HTMLResponse
+from pathlib import Path
 
 
 
@@ -32,6 +35,8 @@ app = FastAPI(
     version=version
     
 )
+# Montar archivos estáticos
+app.mount("/static", StaticFiles(directory="frontend/static"), name="static")
 
 
 origins = ["*"]
@@ -76,6 +81,22 @@ async def generic_exception_handler(request: Request, exc: Exception):
             "error": str(exc)  # Include the exception message for debugging purposes
         }
     )
+
+# Servir archivo HTML de bienvenida
+@app.get("/", response_class=HTMLResponse)
+async def get_index():
+    html_content = Path("frontend/templates/index.html").read_text()
+    return HTMLResponse(content=html_content)
+
+@app.get("/login", response_class=HTMLResponse)
+async def get_login():
+    html_content = Path("frontend/templates/login.html").read_text(encoding="utf-8")
+    return HTMLResponse(content=html_content)
+
+@app.get("/home", response_class=HTMLResponse)
+async def get_login():
+    html_content = Path("frontend/templates/home.html").read_text(encoding="utf-8")
+    return HTMLResponse(content=html_content)
 
 
 

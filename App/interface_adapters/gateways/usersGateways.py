@@ -48,4 +48,4 @@ class UserGateway:
         if orm_user:
             return Users(id=orm_user.id, name=orm_user.name, email=orm_user.email,password=orm_user.password,cellphone=orm_user.cellphone, is_admin=orm_user.is_admin, is_staff=orm_user.is_staff )
         return None
-
+    

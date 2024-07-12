@@ -5,23 +5,25 @@ from App.infrastructure.database import Connect
 from App.core.usecases.authPermissionCases import AuthPermissionUseCase
 from App.interface_adapters.gateways.authPermissionsGateway import AuthPermissionGateway
 
+from App.entrypoints.schemas.userSchema import AuthPermissions, UsePermission
+
 
 router = APIRouter()
 
-@router.get("/authpermissions", status_code=status.HTTP_200_OK)
+@router.get("/authpermissions", response_model=List[AuthPermissions],  status_code=status.HTTP_200_OK)
 async def read_auth_permissions(db:Session= Depends(Connect.get_db)):
     authpermissions_gateway =  AuthPermissionGateway(db)
     authpermission_usecase= AuthPermissionUseCase(authpermissions_gateway)
     return await authpermission_usecase.read_auth_permissions()
 
 
-@router.get("/authpermission/{id}", status_code=status.HTTP_200_OK)
+@router.get("/authpermission/{id}",response_model=AuthPermissions, status_code=status.HTTP_200_OK)
 async def read_auth_permission(id:int, db:Session= Depends(Connect.get_db)):
     authpermissions_gateway =  AuthPermissionGateway(db)
     authpermission_usecase= AuthPermissionUseCase(authpermissions_gateway)
     return await authpermission_usecase.read_auth_permission(id)
 
-@router.get("/userpermision/{users_id}", status_code=status.HTTP_200_OK)
+@router.get("/userpermision/{users_id}",response_model=UsePermission,  status_code=status.HTTP_200_OK)
 async def read_user_permission(users_id:int, db:Session=Depends(Connect.get_db)):
     authpermissions_gateway =  AuthPermissionGateway(db)
     authpermission_usecase= AuthPermissionUseCase(authpermissions_gateway)

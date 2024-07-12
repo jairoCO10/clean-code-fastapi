@@ -27,7 +27,6 @@ class AuthController:
                 detail="user not found"
             )
         else:
-            print(data_login)
             if not jwt.verify_password(users.password, data_login.password):
                 raise HTTPException(
                     status_code=status.HTTP_401_UNAUTHORIZED,

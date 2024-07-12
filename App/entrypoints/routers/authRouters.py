@@ -15,6 +15,7 @@ router = APIRouter()
 async def login(user: Login, db:Session=Depends(Connect.get_db)):
     auth_token = AuthController(db)
     response = await auth_token.auth_login(user)
+    print(response)
     return response
 
 
